@@ -30,18 +30,10 @@ const books = [
     // Add more books as needed
 ];
 
-app.get('/', (req, res) => {
-    res.render('pages/index', { books });
-});
-
-app.get('/book/:id', (req, res) => {
-    const bookId = parseInt(req.params.id, 10);
-    const book = books.find(b => b.id === bookId);
-    if (book) {
-        res.render('pages/book', { book });
-    } else {
-        res.status(404).send('Book not found');
-    }
+app.get("/", (req, res) => {
+    res.render("index.ejs", {
+        books: books,
+    });
 });
 
 app.listen(port, () => {
