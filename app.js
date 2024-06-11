@@ -8,7 +8,41 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-app.get();
+const books = [
+    {
+        id: 1,
+        title: 'Book One',
+        imageUrl: '/images/book1.jpg',
+        rating: 8,
+        finishDate: '2023-12-01',
+        summary: 'This is a summary of book one.',
+        notes: ['Note 1 for book one', 'Note 2 for book one']
+    },
+    {
+        id: 2,
+        title: 'Book Two',
+        imageUrl: '/images/book2.jpg',
+        rating: 9,
+        finishDate: '2024-01-01',
+        summary: 'This is a summary of book two.',
+        notes: ['Note 1 for book two', 'Note 2 for book two']
+    }
+    // Add more books as needed
+];
+
+app.get('/', (req, res) => {
+    res.render('pages/index', { books });
+});
+
+app.get('/book/:id', (req, res) => {
+    const bookId = parseInt(req.params.id, 10);
+    const book = books.find(b => b.id === bookId);
+    if (book) {
+        res.render('pages/book', { book });
+    } else {
+        res.status(404).send('Book not found');
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
