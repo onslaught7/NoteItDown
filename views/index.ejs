@@ -1,6 +1,10 @@
 <%- include('partials/header.ejs', { title: "NoteItDown - Home" }) %>
 <section id="books">
-    <h1>My Book Collection 📚</h1>
+    <div class="title-container">
+        <div class="title-heading">
+            <h1>My Book Collection 📚</h1>
+        </div>
+    </div>
     <div class="book-cards">
         <% books.forEach(function(book) { %>
         <div class="book-card">
@@ -8,8 +12,6 @@
             <div class="book-info">
                 <h2><%= book.title %></h2>
                 <p>Rating: <%= book.rating %>/10</p>
-                <p>Finished on: <%= new Date(book.finishDate).toLocaleDateString() %></p>
-                <p><%= book.summary %></p>
                 <a href="/book/<%= book.id %>" class="view-details">View Details</a>
             </div>
         </div>

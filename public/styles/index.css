@@ -31,6 +31,25 @@ header {
     color: #fff;
 }
 
+.title-container{
+    align-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+.title-heading {
+    background: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    max-width: 300px;
+    max-height: 600px;
+    color: azure;
+    margin-bottom: 20px;
+    padding: 1rem;
+}
+
 .nav-links {
     list-style: none;
     display: flex;
@@ -76,19 +95,31 @@ footer {
 }
 
 .book-card {
-    background: #fff;
+    background: #333;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     max-width: 300px;
+    min-width: 250px;
     max-height: 500px;
+    min-height: 300px;
+    color: azure;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align all child elements */
+    justify-content: space-between;
+    padding-bottom: 2.5rem; /* Space at the bottom to avoid overlap */
+    padding-top: 1rem; /* Add padding at the top */
 }
 
 .book-card img {
     width: 150px;
     height: 200px;
-    padding-top: 1rem;
+    margin: 1rem auto 0; /* Center the image horizontally and add top margin */
+    display: block; /* Ensure image is treated as a block element for auto margins */
+    border-radius: 8px;
 }
 
 .book-info {
@@ -100,18 +131,22 @@ footer {
 }
 
 .view-details {
-    display: inline-block;
+    position: absolute;
+    bottom: 1rem; /* Distance from bottom */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust position to be centered */
     margin-top: 1rem;
     padding: 0.5rem 1rem;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #fff;
+    color: #333;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
 }
 
 .view-details:hover {
-    background-color: #0056b3;
+    background-color: #333;
+    color: #fff;
 }
 
 .book-card:hover {
