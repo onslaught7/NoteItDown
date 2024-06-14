@@ -104,7 +104,24 @@ app.get("/", async (req, res) => {
 app.post("/book", async (req, res) => {
     try{
         const bookId = req.body.id;
+        const result = await db.query(
+            "SELECT books_list.title, imageurl, rating, summary, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id WHERE books_list.id = ($1) ORDER BY books_list.id ASC;",
+            [bookId]
+        );
+
+        // always specify the index position since it returns an array of Object
+        // therefore we have to specify the index of the array to be sent over
+        // In this case we send the first object containing the details from our query stored in result in our array
+        // This will always be 0 since only one object will be returned from each run of the query, one book is a unique id and corresponds to only one record
+        const book = result.rows[0];
+
+        console.log(book.notes);
+        console.log(book);
         console.log(bookId);
+
+        res.render("book.ejs", {
+            book: book
+        });        
     } catch (err){
         console.log(err);
     }

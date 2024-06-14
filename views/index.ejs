@@ -12,7 +12,6 @@
             <div class="book-info">
                 <h2><%= book.title %></h2>
                 <p>Rating: <%= book.rating %>/10</p>
-                <!-- Modified to use a form for POST request -->
                 <form action="/book" method="POST">
                     <!-- Hidden input field to store book.id -->
                     <input type="hidden" name="id" value="<%= book.id %>">
