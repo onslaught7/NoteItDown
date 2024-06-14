@@ -1,16 +1,22 @@
 <%- include('partials/header.ejs', { title: "NoteItDown - Home" }) %>
 <section id="books">
-    <h1>My Book Collection</h1>
+    <div class="title-container">
+        <div class="title-heading">
+            <h1>My Book Collection 📚</h1>
+        </div>
+    </div>
     <div class="book-cards">
         <% books.forEach(function(book) { %>
         <div class="book-card">
-            <img src="<%= book.imageUrl %>" alt="<%= book.title %>">
+            <img src="<%= book.imageurl %>" alt="<%= book.title %>">
             <div class="book-info">
                 <h2><%= book.title %></h2>
                 <p>Rating: <%= book.rating %>/10</p>
-                <p>Finished on: <%= new Date(book.finishDate).toLocaleDateString() %></p>
-                <p><%= book.summary %></p>
-                <a href="/book/<%= book.id %>" class="view-details">View Details</a>
+                <form action="/book" method="POST">
+                    <!-- Hidden input field to store book.id -->
+                    <input type="hidden" name="id" value="<%= book.id %>">
+                    <button type="submit" class="view-details">View Details</button>
+                </form>
             </div>
         </div>
         <% }) %>
