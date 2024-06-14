@@ -88,10 +88,10 @@ app.get("/", async (req, res) => {
     
         books = result.rows;
 
-        console.log(books[0].id);
-        console.log(books[1].title);
-        console.log(books[2].imageurl);
-        console.log(books[3].rating);
+        // console.log(books[0].id);
+        // console.log(books[1].title);
+        // console.log(books[2].imageurl);
+        // console.log(books[3].rating);
 
         res.render("index.ejs", {
             books: books,
@@ -101,13 +101,16 @@ app.get("/", async (req, res) => {
     }
 });
 
-app.get("/book/:id", async (req, res) => {
-    console.log(books.notes);
+// app.get("/book/:id", async (req, res) => {
+//     const bookId = req.body.id;
+//     console.log(bookId);
 
-    res.render("book.ejs", {
-        books: books,
-    })
-})
+//     // const book = await db.query();
+
+//     res.render("book.ejs", {
+//         books: book,
+//     })
+// })
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);

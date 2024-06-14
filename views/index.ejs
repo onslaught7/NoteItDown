@@ -12,7 +12,12 @@
             <div class="book-info">
                 <h2><%= book.title %></h2>
                 <p>Rating: <%= book.rating %>/10</p>
-                <a href="/book/<%= book.id %>" class="view-details">View Details</a>
+                <!-- Modified to use a form for POST request -->
+                <form action="/book" method="POST">
+                    <!-- Hidden input field to store book.id -->
+                    <input type="hidden" name="id" value="<%= book.id %>">
+                    <button type="submit" class="view-details">View Details</button>
+                </form>
             </div>
         </div>
         <% }) %>
