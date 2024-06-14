@@ -1,17 +1,17 @@
 <%- include('partials/header.ejs', { title: "NoteItDown - Home" }) %>
 <section id="book-details">
     <div class="book-header">
-        <img src="<%= book.imageurl %>" alt="<%= books.title %>">
+        <img src="<%= book.imageurl %>" alt="<%= book.title %>">
         <div class="book-meta">
-            <h1><%= books.title %></h1>
-            <p>Rating: <%= books.rating %>/10</p>
-            <p><%= books.summary %></p>
+            <h1><%= book.title %></h1>
+            <p>Rating: <%= book.rating %>/10</p>
+            <p><%= book.summary %></p>
         </div>
     </div>
     <div class="book-notes">
         <h2>Notes</h2>
         <ul>
-            <% books.notes.forEach(function(note) { %>
+            <% book.notes.forEach(function(note) { %>
             <li><%= note %></li>
             <% }) %>
         </ul>

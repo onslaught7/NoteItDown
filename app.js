@@ -88,7 +88,10 @@ app.get("/", async (req, res) => {
     
         books = result.rows;
 
-        console.log(books);
+        console.log(books[0].id);
+        console.log(books[1].title);
+        console.log(books[2].imageurl);
+        console.log(books[3].rating);
 
         res.render("index.ejs", {
             books: books,
