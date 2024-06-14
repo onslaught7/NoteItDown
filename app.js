@@ -101,16 +101,14 @@ app.get("/", async (req, res) => {
     }
 });
 
-// app.get("/book/:id", async (req, res) => {
-//     const bookId = req.body.id;
-//     console.log(bookId);
-
-//     // const book = await db.query();
-
-//     res.render("book.ejs", {
-//         books: book,
-//     })
-// })
+app.post("/book", async (req, res) => {
+    try{
+        const bookId = req.body.id;
+        console.log(bookId);
+    } catch (err){
+        console.log(err);
+    }
+});
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
