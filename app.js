@@ -18,70 +18,84 @@ const db = new pg.Client({
 
 db.connect();
 
-const books = [
-    {
-        id: 1,
-        title: 'Book One',
-        imageUrl: '/images/book1.png',
-        rating: 8,
-        notes: ['Note 1 for book one', 'Note 2 for book one']
-    },
-    {
-        id: 2,
-        title: 'Book Two',
-        imageUrl: '/images/book2.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 3,
-        title: 'Book Three',
-        imageUrl: '/images/book3.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 4,
-        title: 'Book Four',
-        imageUrl: '/images/book4.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 5,
-        title: 'Book Five',
-        imageUrl: '/images/book1.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 6,
-        title: 'Book Six',
-        imageUrl: '/images/book2.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 7,
-        title: 'Book Seven',
-        imageUrl: '/images/book3.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    },
-    {
-        id: 8,
-        title: 'Book Eight',
-        imageUrl: '/images/book4.png',
-        rating: 9,
-        notes: ['Note 1 for book two', 'Note 2 for book two']
-    }
-    // Add more books as needed
-];
+let books = [];
 
-app.get("/", (req, res) => {
-    res.render("index.ejs", {
-        books: books,
-    });
+// const books = [
+//     {
+//         id: 1,
+//         title: 'Book One',
+//         imageUrl: '/images/book1.png',
+//         rating: 8,
+//         notes: ['Note 1 for book one', 'Note 2 for book one']
+//     },
+//     {
+//         id: 2,
+//         title: 'Book Two',
+//         imageUrl: '/images/book2.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 3,
+//         title: 'Book Three',
+//         imageUrl: '/images/book3.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 4,
+//         title: 'Book Four',
+//         imageUrl: '/images/book4.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 5,
+//         title: 'Book Five',
+//         imageUrl: '/images/book1.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 6,
+//         title: 'Book Six',
+//         imageUrl: '/images/book2.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 7,
+//         title: 'Book Seven',
+//         imageUrl: '/images/book3.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     },
+//     {
+//         id: 8,
+//         title: 'Book Eight',
+//         imageUrl: '/images/book4.png',
+//         rating: 9,
+//         notes: ['Note 1 for book two', 'Note 2 for book two']
+//     }
+//     // Add more books as needed
+// ];
+
+app.get("/", async (req, res) => {
+    try {
+        const result = await db.query(
+            "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id ORDER BY books_list.id ASC;"
+        ); 
+    
+        books = result.rows;
+        
+        res.render("index.ejs", {
+            books: books,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+    
+    
 });
 
 app.listen(port, () => {
