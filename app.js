@@ -87,7 +87,9 @@ app.get("/", async (req, res) => {
         ); 
     
         books = result.rows;
-        
+
+        console.log(books);
+
         res.render("index.ejs", {
             books: books,
         });
@@ -97,7 +99,11 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/book/:id", async (req, res) => {
+    console.log(books.notes);
 
+    res.render("book.ejs", {
+        books: books,
+    })
 })
 
 app.listen(port, () => {
