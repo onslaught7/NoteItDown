@@ -115,9 +115,10 @@ app.post("/book", async (req, res) => {
         // This will always be 0 since only one object will be returned from each run of the query, one book is a unique id and corresponds to only one record
         const book = result.rows[0];
 
-        console.log(book.notes);
-        console.log(book);
-        console.log(bookId);
+        // console logs for error handling
+        // console.log(book.notes);
+        // console.log(book);
+        // console.log(bookId);
 
         res.render("book.ejs", {
             book: book
