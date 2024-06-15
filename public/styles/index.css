@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #333;
+    background-color: #73c0f3;
     color: #fff;
     padding: 1rem 0;
     position: fixed;
@@ -91,7 +91,7 @@ footer {
     display: flex;
     flex-wrap: wrap;
     gap: 3rem;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .book-card {
