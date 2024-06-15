@@ -20,66 +20,6 @@ db.connect();
 
 let books = [];
 
-// const books = [
-//     {
-//         id: 1,
-//         title: 'Book One',
-//         imageUrl: '/images/book1.png',
-//         rating: 8,
-//         notes: ['Note 1 for book one', 'Note 2 for book one']
-//     },
-//     {
-//         id: 2,
-//         title: 'Book Two',
-//         imageUrl: '/images/book2.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 3,
-//         title: 'Book Three',
-//         imageUrl: '/images/book3.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 4,
-//         title: 'Book Four',
-//         imageUrl: '/images/book4.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 5,
-//         title: 'Book Five',
-//         imageUrl: '/images/book1.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 6,
-//         title: 'Book Six',
-//         imageUrl: '/images/book2.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 7,
-//         title: 'Book Seven',
-//         imageUrl: '/images/book3.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 8,
-//         title: 'Book Eight',
-//         imageUrl: '/images/book4.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     }
-//     // Add more books as needed
-// ];
-
 app.get("/", async (req, res) => {
     try {
         const result = await db.query(
@@ -87,11 +27,6 @@ app.get("/", async (req, res) => {
         ); 
     
         books = result.rows;
-
-        // console.log(books[0].id);
-        // console.log(books[1].title);
-        // console.log(books[2].imageurl);
-        // console.log(books[3].rating);
 
         res.render("index.ejs", {
             books: books,
@@ -114,11 +49,6 @@ app.post("/book", async (req, res) => {
         // In this case we send the first object containing the details from our query stored in result in our array
         // This will always be 0 since only one object will be returned from each run of the query, one book is a unique id and corresponds to only one record
         const book = result.rows[0];
-
-        // console logs for error handling
-        // console.log(book.notes);
-        // console.log(book);
-        // console.log(bookId);
 
         res.render("book.ejs", {
             book: book
