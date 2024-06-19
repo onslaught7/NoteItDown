@@ -1,12 +1,12 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
 }
 
 header {
-    background-color: #73c0f3;
+    background-color: #973131;
     color: #fff;
     padding: 1rem 0;
     position: fixed;
@@ -38,7 +38,7 @@ header {
 }
 
 .title-heading {
-    background: #333;
+    background: #973131;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
@@ -76,7 +76,7 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #333;
+    background-color: #973131;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -91,20 +91,20 @@ footer {
     display: flex;
     flex-wrap: wrap;
     gap: 3rem;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .book-card {
-    background: #333;
+    background: #F5E7B2;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    max-width: 300px;
-    min-width: 250px;
-    max-height: 500px;
-    min-height: 300px;
-    color: azure;
+    width: 300px;
+    /* min-width: 250px; */
+    /* max-height: 500px; */
+    height: 350px;
+    color: #973131;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -142,10 +142,11 @@ footer {
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    border: 0;
 }
 
 .view-details:hover {
-    background-color: #333;
+    background-color: #973131;
     color: #fff;
 }
 
