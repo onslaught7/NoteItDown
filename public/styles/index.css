@@ -5,6 +5,11 @@ body {
     background-color: #f4f4f4;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700; /* Use bold weight for headings */
+}
+
 header {
     background-color: #973131;
     color: #fff;
