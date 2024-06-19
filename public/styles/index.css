@@ -166,10 +166,16 @@ footer {
 
 .book-info {
     padding: 1rem;
+    
 }
 
 .book-info h2 {
+    display: inline-block;
+    max-width: 280px;
     margin: 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .view-details {
