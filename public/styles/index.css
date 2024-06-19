@@ -1,18 +1,33 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ebe7da;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 700; /* Use bold weight for headings */
 }
 
 header {
-    background-color: #333;
+    background-color: #973131;
     color: #fff;
     padding: 1rem 0;
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 1000;
+}
+
+.nav-links {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400; 
+}
+
+.book-card h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
 }
 
 .nav-container {
@@ -37,8 +52,37 @@ header {
     justify-content: center;
 }
 
+.sort-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    gap: 1rem;
+}
+
+.sort-buttons form {
+    margin: 0;
+}
+
+.sort-buttons button {
+    background-color: #973131;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    transition: background-color 0.3s ease;
+    width: 120px;
+}
+
+.sort-buttons button:hover {
+    background-color: #fff;
+    color: #973131;
+}
+
 .title-heading {
-    background: #333;
+    background: #973131;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
@@ -76,7 +120,7 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background-color: #333;
+    background-color: #973131;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -95,46 +139,50 @@ footer {
 }
 
 .book-card {
-    background: #333;
+    background: #F5E7B2;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 10px 10px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    max-width: 300px;
-    min-width: 250px;
-    max-height: 500px;
-    min-height: 300px;
-    color: azure;
+    width: 300px;
+    height: 350px;
+    color: #973131;
     position: relative;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center align all child elements */
+    align-items: center; 
     justify-content: space-between;
-    padding-bottom: 2.5rem; /* Space at the bottom to avoid overlap */
-    padding-top: 1rem; /* Add padding at the top */
+    padding-bottom: 2.5rem; 
+    padding-top: 1rem; 
 }
 
 .book-card img {
     width: 150px;
     height: 200px;
-    margin: 1rem auto 0; /* Center the image horizontally and add top margin */
-    display: block; /* Ensure image is treated as a block element for auto margins */
+    margin: 1rem auto 0; 
+    display: block; 
     border-radius: 8px;
 }
 
 .book-info {
     padding: 1rem;
+    
 }
 
 .book-info h2 {
+    display: inline-block;
+    max-width: 280px;
     margin: 0.5rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .view-details {
     position: absolute;
-    bottom: 1rem; /* Distance from bottom */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust position to be centered */
+    bottom: 1rem; 
+    left: 50%; 
+    transform: translateX(-50%); 
     margin-top: 1rem;
     padding: 0.5rem 1rem;
     background-color: #fff;
@@ -142,10 +190,11 @@ footer {
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
+    border: 0;
 }
 
 .view-details:hover {
-    background-color: #333;
+    background-color: #973131;
     color: #fff;
 }
 

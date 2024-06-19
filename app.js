@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
-import pg from "pg"
+import pg from "pg";
+import axios from "axios";
 
 const app = express();
 const port = 3000;
@@ -20,78 +21,87 @@ db.connect();
 
 let books = [];
 
-// const books = [
-//     {
-//         id: 1,
-//         title: 'Book One',
-//         imageUrl: '/images/book1.png',
-//         rating: 8,
-//         notes: ['Note 1 for book one', 'Note 2 for book one']
-//     },
-//     {
-//         id: 2,
-//         title: 'Book Two',
-//         imageUrl: '/images/book2.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 3,
-//         title: 'Book Three',
-//         imageUrl: '/images/book3.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 4,
-//         title: 'Book Four',
-//         imageUrl: '/images/book4.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 5,
-//         title: 'Book Five',
-//         imageUrl: '/images/book1.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 6,
-//         title: 'Book Six',
-//         imageUrl: '/images/book2.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 7,
-//         title: 'Book Seven',
-//         imageUrl: '/images/book3.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     },
-//     {
-//         id: 8,
-//         title: 'Book Eight',
-//         imageUrl: '/images/book4.png',
-//         rating: 9,
-//         notes: ['Note 1 for book two', 'Note 2 for book two']
-//     }
-//     // Add more books as needed
-// ];
+async function fetchBookImage(bookId, bookTitle) {
+    try {
+        const response = await axios.get(
+            `https://openlibrary.org/search.json?title=${encodeURIComponent(bookTitle)}`
+        );
+
+        if (response.data.docs && response.data.docs.length > 0) {
+            const coverId = response.data.docs[0].cover_i;
+            let imageUrl = '';
+
+            if (coverId) {
+                imageUrl = `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`; // Using 'L' for large cover size
+            }
+
+            // Update the database with the fetched image URL
+            await db.query("UPDATE books_list SET imageurl = $1 WHERE id = $2", [imageUrl, bookId]);
+        } 
+    } catch (err) {
+        console.error(`Failed to fetch image for book '${bookTitle}':`, error);
+    }
+}
 
 app.get("/", async (req, res) => {
     try {
-        const result = await db.query(
-            "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id ORDER BY books_list.id ASC;"
-        ); 
+        const query = `
+            SELECT books_list.id, books_list.title, imageurl, rating, notes
+            FROM books_list
+            JOIN book_notes ON books_list.id = book_notes.book_id
+            ORDER BY books_list.id ASC;
+        `;
+
+        const result = await db.query(query);
+
+        books = result.rows;
+
+        // Fetch and store images for books without images
+        for (let book of books) {
+            if (!book.imageurl) {
+                await fetchBookImage(book.id, book.title);
+            }
+        }
+
+        // Re-fetch updated books list with images
+        const updatedResult = await db.query(query);
+
+        books = updatedResult.rows;
+
+        res.render("index.ejs", {
+            books: books,
+        });
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+app.post("/", async (req, res) => {
+    try {
+        const sortCriteria = req.body.sort;
+        let query = "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id";
+
+        if(sortCriteria === 'rating') {
+            query += " ORDER BY rating DESC, books_list.title ASC;"; 
+        } else if(sortCriteria === 'alphabetical') {
+            query += " ORDER BY books_list.title ASC;";
+        } else {
+            query += " ORDER BY books_list.id ASC;";
+        }
+
+        const result = await db.query(query); 
     
         books = result.rows;
 
-        // console.log(books[0].id);
-        // console.log(books[1].title);
-        // console.log(books[2].imageurl);
-        // console.log(books[3].rating);
+        for(let book of books) {
+            if (!book.imageurl) {
+                await fetchBookImage(book.id, book.title);
+            }
+        }
+
+        const updatedResult = await db.query(query);
+
+        books = updatedResult.rows;
 
         res.render("index.ejs", {
             books: books,
@@ -102,28 +112,32 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/book", async (req, res) => {
-    try{
+    try {
         const bookId = req.body.id;
         const result = await db.query(
-            "SELECT books_list.title, imageurl, rating, summary, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id WHERE books_list.id = ($1) ORDER BY books_list.id ASC;",
+            "SELECT books_list.title, imageurl, rating, summary, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id WHERE books_list.id = $1 ORDER BY books_list.id ASC;",
             [bookId]
         );
 
-        // always specify the index position since it returns an array of Object
-        // therefore we have to specify the index of the array to be sent over
-        // In this case we send the first object containing the details from our query stored in result in our array
-        // This will always be 0 since only one object will be returned from each run of the query, one book is a unique id and corresponds to only one record
-        const book = result.rows[0];
+        let book = result.rows[0];
 
-        // console logs for error handling
-        // console.log(book.notes);
-        // console.log(book);
-        // console.log(bookId);
+        if(!book.imageurl) {
+            await fetchBookImage(bookId, book.title);
+
+            const updatedResult = await db.query(
+                "SELECT books_list.title, imageurl, rating, summary, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id WHERE books_list.id = $1 ORDER BY books_list.id ASC;"
+            );
+            // always specify the index position since it returns an array of Object
+            // therefore we have to specify the index of the array to be sent over
+            // In this case we send the first object containing the details from our query stored in result in our array
+            // This will always be 0 since only one object will be returned from each run of the query, one book is a unique id and corresponds to only one record
+            book = updatedResult.rows[0];
+        }
 
         res.render("book.ejs", {
             book: book
         });        
-    } catch (err){
+    } catch (err) {
         console.log(err);
     }
 });

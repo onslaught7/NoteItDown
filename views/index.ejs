@@ -5,6 +5,16 @@
             <h1>My Book Collection 📚</h1>
         </div>
     </div>
+    <div class="sort-buttons">
+        <form action="/" method="POST">
+            <input type="hidden" name="sort" value="rating">
+            <button type="submit">Sort By Rating</button>
+        </form>
+        <form action="/" method="POST">
+            <input type="hidden" name="sort" value="alphabetical">
+            <button type="submit">Sort A-Z</button>
+        </form>
+    </div>
     <div class="book-cards">
         <% books.forEach(function(book) { %>
         <div class="book-card">
