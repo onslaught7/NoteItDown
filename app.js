@@ -70,7 +70,26 @@ app.get("/", async (req, res) => {
     }
 });
 
+app.post("/", async (req, res) => {
+    try {
+        const sortCriteria = req.body.sort;
+        let required_query = `
+            SELECT books_list.id, books_list.title, imageurl, rating, notes 
+            FROM books_list 
+            JOIN book_notes ON books_list.id = book_notes.book_id
+        `;
 
+        if(sortCriteria === 'rating') {
+            required_query += " ORDER BY rating DESC, books_list.title ASC;"; 
+        } else if(sortCriteria === 'alphabetical') {
+            required_query += " ORDER BY books_list.title ASC;";
+        } else {
+            query += " ORDER BY books_list.id ASC;";
+        }
+    } catch (err) {
+        console.log(err);
+    }
+});
 
 app.post("/book", async (req, res) => {
     try {

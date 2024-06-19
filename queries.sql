@@ -30,3 +30,12 @@ JOIN book_notes
 ON books_list.id = book_notes.book_id 
 WHERE books_list.id = 1
 ORDER BY books_list.id ASC;
+
+-- Update the database with the fetched image URL
+("UPDATE books_list SET imageurl = $1 WHERE id = $2", [imageUrl, bookId]);
+
+-- Sorting by ratings and then alphabetically if ratings are similar
+SELECT books_list.id, books_list.title, imageurl, rating, notes 
+FROM books_list 
+JOIN book_notes ON books_list.id = book_notes.book_id;
+ORDER BY rating DESC, books_list.title ASC 
