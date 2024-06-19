@@ -42,23 +42,29 @@ async function fetchBookImage(bookId, bookTitle) {
         console.error(`Failed to fetch image for book '${bookTitle}':`, error);
     }
 }
+
 app.get("/", async (req, res) => {
     try {
-        const result = await db.query(
-            "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id ORDER BY books_list.id ASC;"
-        ); 
-    
+        const query = `
+            SELECT books_list.id, books_list.title, imageurl, rating, notes
+            FROM books_list
+            JOIN book_notes ON books_list.id = book_notes.book_id
+            ORDER BY books_list.id ASC;
+        `;
+
+        const result = await db.query(query);
+
         books = result.rows;
 
-        for(let book of books) {
+        // Fetch and store images for books without images
+        for (let book of books) {
             if (!book.imageurl) {
                 await fetchBookImage(book.id, book.title);
             }
         }
 
-        const updatedResult = await db.query(
-            "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id ORDER BY books_list.id ASC;"
-        );
+        // Re-fetch updated books list with images
+        const updatedResult = await db.query(query);
 
         books = updatedResult.rows;
 
@@ -73,19 +79,33 @@ app.get("/", async (req, res) => {
 app.post("/", async (req, res) => {
     try {
         const sortCriteria = req.body.sort;
-        let required_query = `
-            SELECT books_list.id, books_list.title, imageurl, rating, notes 
-            FROM books_list 
-            JOIN book_notes ON books_list.id = book_notes.book_id
-        `;
+        let query = "SELECT books_list.id, books_list.title, imageurl, rating, notes FROM books_list JOIN book_notes ON books_list.id = book_notes.book_id";
 
         if(sortCriteria === 'rating') {
-            required_query += " ORDER BY rating DESC, books_list.title ASC;"; 
+            query += " ORDER BY rating DESC, books_list.title ASC;"; 
         } else if(sortCriteria === 'alphabetical') {
-            required_query += " ORDER BY books_list.title ASC;";
+            query += " ORDER BY books_list.title ASC;";
         } else {
             query += " ORDER BY books_list.id ASC;";
         }
+
+        const result = await db.query(query); 
+    
+        books = result.rows;
+
+        for(let book of books) {
+            if (!book.imageurl) {
+                await fetchBookImage(book.id, book.title);
+            }
+        }
+
+        const updatedResult = await db.query(query);
+
+        books = updatedResult.rows;
+
+        res.render("index.ejs", {
+            books: books,
+        });
     } catch (err) {
         console.log(err);
     }
