@@ -20,6 +20,16 @@ header {
     z-index: 1000;
 }
 
+.nav-links {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400; /* Regular weight */
+}
+
+.book-card h2 {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700; /* Bold weight */
+}
+
 .nav-container {
     display: flex;
     justify-content: space-between;
